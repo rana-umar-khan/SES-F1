@@ -10,6 +10,10 @@ namespace SES_F1.Controllers
     {
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                //Redirect to index of respective type
+            }
             return View();
         }
 

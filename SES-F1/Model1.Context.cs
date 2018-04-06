@@ -29,12 +29,14 @@ namespace SES_F1
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Attendance> Attendances { get; set; }
-        public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<Admin> Admins { get; set; }
         public virtual DbSet<AdmissionRecord> AdmissionRecords { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<Class> Classes { get; set; }
     }
 }

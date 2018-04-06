@@ -20,9 +20,20 @@ namespace SES_F1
             this.Classes = new HashSet<Class>();
         }
     
-        public string TeacherId { get; set; }
-        public string First_Name { get; set; }
-        public string Last_Name { get; set; }
+        public int Teacherid { get; set; }
+        public string UserID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public System.DateTime DOB { get; set; }
+        public decimal CNIC { get; set; }
+        public decimal PhoneNumber { get; set; }
+        public System.DateTime JoiningDate { get; set; }
+        public string Gender { get; set; }
+        public string FatherName { get; set; }
+        public string Qualification { get; set; }
+        public bool Status { get; set; }
+        public Nullable<System.DateTime> LeavingDate { get; set; }
+        public string photo { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

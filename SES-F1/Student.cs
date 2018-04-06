@@ -18,19 +18,24 @@ namespace SES_F1
         public Student()
         {
             this.Attendances = new HashSet<Attendance>();
+            this.AdmissionRecords = new HashSet<AdmissionRecord>();
         }
     
         public string RollNumber { get; set; }
         public string FirstName { get; set; }
-        public byte[] LastName { get; set; }
+        public string LastName { get; set; }
         public decimal CNIC { get; set; }
         public string FatherName { get; set; }
         public string Guardian { get; set; }
         public int ClassID { get; set; }
         public decimal ContactNumber { get; set; }
+        public string photo { get; set; }
+        public bool status { get; set; }
     
-        public virtual Class Class { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }
+        public virtual Class Class { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdmissionRecord> AdmissionRecords { get; set; }
     }
 }

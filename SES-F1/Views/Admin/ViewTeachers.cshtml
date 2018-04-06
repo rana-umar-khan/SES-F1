@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SES_F1.Teacher>
+
+@{
+    ViewBag.Title = "ViewTeachers";
+}
+
+<h2>ViewTeachers</h2>
+
+<p>
+    @Html.ActionLink("Add Teacher", "AddTeacher")
+</p>
+
+<h4>@ViewBag.Message</h4>
+
+<table class="table table-responsive table-bordered">
+    <tr>
+        <th>
+            Photo
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CNIC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JoiningDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FatherName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qualification)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img src="@item.photo" height="150" width="150"/>
+        </td>
+        <td>
+            @item.FirstName
+        </td>
+        <td>
+            @item.LastName
+        </td>
+        <td>
+            @item.DOB.Date
+        </td>
+        <td>
+            @item.CNIC.ToString()
+        </td>
+        <td>
+            @item.PhoneNumber.ToString()
+        </td>
+        <td>
+            @item.JoiningDate.Date.ToShortDateString()
+        </td>
+        <td>
+            @item.Gender
+        </td>
+        <td>
+            @item.FatherName
+        </td>
+        <td>
+            @item.Qualification
+        </td>
+        <td>
+            @item.AspNetUser.Email
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditTeacher", new { TeacherId=item.Teacherid }) |
+            @Html.ActionLink("Details", "TeacherDetails", new { TeacherId = item.Teacherid }) |
+            @Html.ActionLink("Delete", "DeleteTeacher", new { TeacherId = item.Teacherid })
+        </td>
+    </tr>
+}
+
+</table>

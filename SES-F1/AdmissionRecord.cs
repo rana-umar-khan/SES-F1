@@ -20,5 +20,7 @@ namespace SES_F1
         public System.DateTime AdmissionDate { get; set; }
         public Nullable<System.DateTime> LeavingDate { get; set; }
         public bool Status { get; set; }
+    
+        public virtual Student Student { get; set; }
     }
 }

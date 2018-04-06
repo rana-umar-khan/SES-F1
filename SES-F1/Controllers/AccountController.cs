@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -15,6 +16,7 @@ namespace SES_F1.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private SESEntities db = new SESEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -57,8 +59,43 @@ namespace SES_F1.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            if (User.Identity.IsAuthenticated)
+            {
+                string id = User.Identity.GetUserId();
+                string role = getRole(id);
+                switch (role)
+                {
+                    case( "admin"):
+                        return RedirectToAction("Index", "Admin");
+                    case ("teacher"):
+                        return RedirectToAction("Index", "Teacher");
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home");
             return View();
+        }
+
+        private string getRole(string id)
+        {
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            try
+            {
+
+                IList<string> a = userManager.GetRoles(id);
+                string b = a.First();
+                if(b.Length>0)
+                {
+                    return b;
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Warning = "No Role Assigned";
+                return "default";
+            }
+
+            return "default";
         }
 
         //
@@ -75,21 +112,29 @@ namespace SES_F1.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
                     {
-                        SESEntities a = new SESEntities();
-                        
-                        AspNetUser userr =a.AspNetUsers.Find("c1b01a11-bcba-404f-8fa9-6037606ed252");
-                        Teacher t = a.Teachers.Find(userr.Id);
-                        if (t.First_Name=="Umar")
+                        var user = await UserManager.FindAsync(model.Username, model.Password);
+                        var roles = await UserManager.GetRolesAsync(user.Id);
+                        if (returnUrl != null)
                         {
-                            returnUrl = "~/Teacher/Index";
+                            RedirectToLocal(returnUrl);
                         }
-                        return RedirectToLocal(returnUrl);
-
+                        if (roles.Contains("admin"))
+                        {   
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else if (roles.Contains("teacher"))
+                        {
+                            return RedirectToAction("index", "Teacher");
+                        }
+                        else
+                        {
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
                 case SignInStatus.LockedOut:
                     return View("Lockout");

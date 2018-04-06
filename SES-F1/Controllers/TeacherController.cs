@@ -6,15 +6,20 @@ using System.Web.Mvc;
 
 namespace SES_F1.Controllers
 {
+    [Authorize(Roles = "teacher") ]
     public class TeacherController : Controller
     {
+        SESEntities db = new SESEntities();
+
+
         // GET: Teacher
+        
         public ActionResult Index()
         {
-            SESEntities a=new SESEntities();
-            Teacher t=(a.AspNetUsers.Find("c1b01a11-bcba-404f-8fa9-6037606ed252")).Teacher;
-            Teacher t1 =(Teacher) t;
+            AspNetUser u = db.AspNetUsers.Where(a=>a.UserName== User.Identity.Name).FirstOrDefault();
+            Teacher t= u.Teachers.FirstOrDefault();
             return View(t);
         }
+        
     }
 }

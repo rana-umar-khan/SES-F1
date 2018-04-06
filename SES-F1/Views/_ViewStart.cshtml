@@ -1,3 +1,25 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //using Microsoft.Owin;
+    //using Owin;
+    //using Microsoft.AspNet.Identity;
+    //using Microsoft.AspNet.Identity.EntityFramework;
+
+    string CurrentName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
+    //var context = new ApplicationDbContext();
+    //var db = new SESEntities();
+    //var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+    //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+    ////dynamic Layout;
+    switch (CurrentName)
+    {
+        case "Admin":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "Teacher":
+            Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
 }

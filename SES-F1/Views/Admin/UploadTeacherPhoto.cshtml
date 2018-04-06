@@ -1,0 +1,40 @@
+﻿@model SES_F1.Teacher
+
+@{
+    ViewBag.Title = "UploadTeacherPhoto";
+}
+
+<h2>UploadTeacherPhoto</h2>
+
+    @using (Html.BeginForm("UploadTeacherPhoto", "Admin", FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <div class="col-md-10">
+
+                <label for="file">Upload Image:</label>
+                <br />
+                <input type="file" name="file" id="file" style="width: 100%;" />
+                <br />
+                <label class="control-label col-md-2">Teacher:</label>
+                <select name="TeacherId" id="TeacherId" class="form-group">
+                    @{
+            IEnumerable<SelectListItem> tlist = (IEnumerable<SelectListItem>)ViewBag.Teachers;
+            foreach (var item in tlist)
+            {
+                <option value="@item.Value">@item.Text</option>
+}
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

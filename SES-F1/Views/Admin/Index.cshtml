@@ -1,0 +1,137 @@
+﻿@model SES_F1.Admin
+
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+}
+
+<h2>Admin Homepage</h2>
+
+<div class="row" style="padding-top:50px">
+    <div class="col col-lg-3"></div>
+    <div class="col col-lg-8">
+        <div class="row">
+            <div class="col" style="padding:10px">
+                <div class="card" style="background-color:cadetblue;padding:10px">
+                    <i class="fa fa-users fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">450 Students</h4>
+                </div>
+            </div>
+            <div class="col" style="padding:10px">
+                <div class="card" style="background-color:coral;padding:10px">
+                    <i class="fa fa-graduation-cap fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">150 Stud. Graduated</h4>
+                </div>
+            </div>
+
+            <div class="col" style="padding:10px">
+                <div class="card" style="background-color:darkgray;padding:10px">
+                    <i class="fa fa-home fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">10 Classes</h4>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col" style="padding:10px">
+                <div class="card" style="background-color:red;padding:10px">
+                    <i class="fa fa-university fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">2 Campus</h4>
+                </div>
+            </div>
+            <div class="col" style="padding:10px">
+                <div class="card" style="background-color:greenyellow;padding:10px">
+                    <i class="fa fa-user fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">15 Teachers</h4>
+                </div>
+            </div>
+            <div class="col" style="padding:10px">
+                <div class="card" style=" padding:10px;background-color:darkgray">
+                    <i class="fa fa-pencil fa-2x" style="align-self:center" aria-hidden="true"></i>
+                    <h4 style="align-self:center">45 Exams</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-lg-1"></div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card" id="chart_div"></div>
+    </div>
+    <div class="col">
+        <div class="card" id="finance_chart" style="width:630px;height:350px"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawFinanceChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+            var data = google.visualization.arrayToDataTable([
+                ['Class', 'Students', { role: 'style' }],
+                ['Nursery', 40, '#b87333'],            // RGB value
+                ['Prep', 32, 'silver'],            // English color name
+                ['1', 42, 'gold'],
+                ['2', 30, 'color: green'], // CSS-style declaration
+                ['3', 25, 'color: red'], ['4', 50, 'color: blue'],
+            ]);
+
+            // Set chart options
+            var options = {
+                'title': 'Students',
+                'width': 520,
+                'height': 400
+
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+
+        function drawFinanceChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Month', 'Income', 'Expenses'],
+                ['January', 50000, 40000],
+                ['February', 52000, 41000],
+                ['March', 45000, 30000],
+                ['April', 50000, 60000],
+                ['May', 42000, 25650],
+                ['June', 47000, 31560],
+                ['July', 30000, 40000]
+            ]);
+
+            var options = {
+                title: 'Financial Performance',
+
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('finance_chart'));
+
+            chart.draw(data, options);
+        }
+</script>
+
+
+
+        </div>

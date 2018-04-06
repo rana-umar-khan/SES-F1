@@ -15,17 +15,19 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SES.dbo.AdmissionRecord' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userID" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="AdmissionRecord">
           <Key>
             <PropertyRef Name="RecordID" />
-            <PropertyRef Name="RollNumber" />
-            <PropertyRef Name="PreviousSchool" />
-            <PropertyRef Name="AdmissionDate" />
-            <PropertyRef Name="Status" />
           </Key>
-          <Property Name="RecordID" Type="int" Nullable="false" />
+          <Property Name="RecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RollNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PreviousSchool" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AdmissionDate" Type="date" Nullable="false" />
@@ -97,10 +99,23 @@ warning 6002: The table/view 'SES.dbo.AdmissionRecord' does not have a primary k
             <PropertyRef Name="ClassID" />
           </Key>
           <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="ClassLevel" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="MonthlyFee" Type="int" Nullable="false" />
           <Property Name="AnnualCharges" Type="int" Nullable="false" />
           <Property Name="AdmissionFee" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Designsation" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salary" Type="int" Nullable="false" />
+          <Property Name="JoiningDate" Type="date" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="LeavingDate" Type="date" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -118,31 +133,68 @@ warning 6002: The table/view 'SES.dbo.AdmissionRecord' does not have a primary k
           </Key>
           <Property Name="RollNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastName" Type="varbinary" MaxLength="50" Nullable="false" />
-          <Property Name="CNIC" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CNIC" Type="money" Nullable="false" />
           <Property Name="FatherName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Guardian" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="ContactNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ContactNumber" Type="money" Nullable="false" />
+          <Property Name="photo" Type="varchar" MaxLength="50" />
+          <Property Name="status" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Teachers">
+        <EntityType Name="Teacher">
           <Key>
-            <PropertyRef Name="TeacherId" />
+            <PropertyRef Name="Teacherid" />
           </Key>
-          <Property Name="TeacherId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="First_Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Last_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Teacherid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="CNIC" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PhoneNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="JoiningDate" Type="date" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="FatherName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Qualification" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="LeavingDate" Type="date" />
+          <Property Name="photo" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TecaherClass">
+warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TeacherClass">
           <Key>
-            <PropertyRef Name="ClassID" />
-            <PropertyRef Name="TeacherID" />
+            <PropertyRef Name="Teacherid" />
+            <PropertyRef Name="Classid" />
           </Key>
-          <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="TeacherID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Teacherid" Type="int" Nullable="false" />
+          <Property Name="Classid" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Admins_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdmissionRecord_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="AdmissionRecord" Type="Self.AdmissionRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="RollNumber" />
+            </Principal>
+            <Dependent Role="AdmissionRecord">
+              <PropertyRef Name="RollNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Attendance_Student">
           <End Role="Student" Type="Self.Student" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
@@ -223,44 +275,46 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Teachers_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Teachers" Type="Self.Teachers" Multiplicity="0..1" />
+        <Association Name="FK_Teacher_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Teachers">
-              <PropertyRef Name="TeacherId" />
+            <Dependent Role="Teacher">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TecaherClass_Class">
+        <Association Name="FK_TeacherClass_Class">
           <End Role="Class" Type="Self.Class" Multiplicity="1" />
-          <End Role="TecaherClass" Type="Self.TecaherClass" Multiplicity="*" />
+          <End Role="TeacherClass" Type="Self.TeacherClass" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Class">
               <PropertyRef Name="ClassID" />
             </Principal>
-            <Dependent Role="TecaherClass">
-              <PropertyRef Name="ClassID" />
+            <Dependent Role="TeacherClass">
+              <PropertyRef Name="Classid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TecaherClass_Teachers">
-          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1" />
-          <End Role="TecaherClass" Type="Self.TecaherClass" Multiplicity="*" />
+        <Association Name="FK_TeacherClass_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="TeacherClass" Type="Self.TeacherClass" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Teachers">
-              <PropertyRef Name="TeacherId" />
+            <Principal Role="Teacher">
+              <PropertyRef Name="Teacherid" />
             </Principal>
-            <Dependent Role="TecaherClass">
-              <PropertyRef Name="TeacherID" />
+            <Dependent Role="TeacherClass">
+              <PropertyRef Name="Teacherid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SESModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdmissionRecord" EntityType="Self.AdmissionRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -268,25 +322,24 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AdmissionRecord" EntityType="Self.AdmissionRecord" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherClass" EntityType="Self.TeacherClass" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [AdmissionRecord].[RecordID] AS [RecordID], 
-    [AdmissionRecord].[RollNumber] AS [RollNumber], 
-    [AdmissionRecord].[PreviousSchool] AS [PreviousSchool], 
-    [AdmissionRecord].[AdmissionDate] AS [AdmissionDate], 
-    [AdmissionRecord].[LeavingDate] AS [LeavingDate], 
-    [AdmissionRecord].[Status] AS [Status]
-    FROM [dbo].[AdmissionRecord] AS [AdmissionRecord]</DefiningQuery>
+    [TeacherClass].[Teacherid] AS [Teacherid], 
+    [TeacherClass].[Classid] AS [Classid]
+    FROM [dbo].[TeacherClass] AS [TeacherClass]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="TecaherClass" EntityType="Self.TecaherClass" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TecaherClass].[ClassID] AS [ClassID], 
-    [TecaherClass].[TeacherID] AS [TeacherID]
-    FROM [dbo].[TecaherClass] AS [TecaherClass]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_Admins_AspNetUsers" Association="Self.FK_Admins_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdmissionRecord_Student" Association="Self.FK_AdmissionRecord_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="AdmissionRecord" EntitySet="AdmissionRecord" />
+          </AssociationSet>
           <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -311,17 +364,17 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
             <End Role="Class" EntitySet="Class" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
-          <AssociationSet Name="FK_Teachers_AspNetUsers" Association="Self.FK_Teachers_AspNetUsers">
+          <AssociationSet Name="FK_Teacher_AspNetUsers1" Association="Self.FK_Teacher_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="Teacher" EntitySet="Teacher" />
           </AssociationSet>
-          <AssociationSet Name="FK_TecaherClass_Class" Association="Self.FK_TecaherClass_Class">
+          <AssociationSet Name="FK_TeacherClass_Class" Association="Self.FK_TeacherClass_Class">
             <End Role="Class" EntitySet="Class" />
-            <End Role="TecaherClass" EntitySet="TecaherClass" />
+            <End Role="TeacherClass" EntitySet="TeacherClass" />
           </AssociationSet>
-          <AssociationSet Name="FK_TecaherClass_Teachers" Association="Self.FK_TecaherClass_Teachers">
-            <End Role="Teachers" EntitySet="Teachers" />
-            <End Role="TecaherClass" EntitySet="TecaherClass" />
+          <AssociationSet Name="FK_TeacherClass_Teacher" Association="Self.FK_TeacherClass_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TeacherClass" EntitySet="TeacherClass" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -344,7 +397,7 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="SESModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -354,7 +407,7 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUserLogin">
           <Key>
@@ -365,28 +418,7 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="AspNetUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Teacher" Relationship="Self.FK_Teachers_AspNetUsers" FromRole="AspNetUsers" ToRole="Teachers" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="Attendance">
           <Key>
@@ -398,18 +430,6 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Student" Relationship="SESModel.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
         </EntityType>
-        <EntityType Name="Class">
-          <Key>
-            <PropertyRef Name="ClassID" />
-          </Key>
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="ClassLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MonthlyFee" Type="Int32" Nullable="false" />
-          <Property Name="AnnualCharges" Type="Int32" Nullable="false" />
-          <Property Name="AdmissionFee" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Teachers" Relationship="Self.TecaherClass" FromRole="Class" ToRole="Teachers" />
-          <NavigationProperty Name="Students" Relationship="SESModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
-        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="LogID" />
@@ -420,147 +440,96 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
           <Property Name="Date" Type="DateTime" Precision="0" />
           <Property Name="Time" Type="Time" Precision="7" />
         </EntityType>
-        <EntityType Name="Student">
-          <Key>
-            <PropertyRef Name="RollNumber" />
-          </Key>
-          <Property Name="RollNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
-          <Property Name="CNIC" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Guardian" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="ContactNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <NavigationProperty Name="Class" Relationship="SESModel.FK_Student_Class" FromRole="Student" ToRole="Class" />
-          <NavigationProperty Name="Attendances" Relationship="SESModel.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
-        </EntityType>
-        <EntityType Name="Teacher">
-          <Key>
-            <PropertyRef Name="TeacherId" />
-          </Key>
-          <Property Name="TeacherId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Teachers_AspNetUsers" FromRole="Teachers" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Classes" Relationship="Self.TecaherClass" FromRole="Teachers" ToRole="Class" />
-        </EntityType>
-        <EntityType Name="AdmissionRecord">
-          <Key>
-            <PropertyRef Name="RecordID" />
-            <PropertyRef Name="RollNumber" />
-            <PropertyRef Name="PreviousSchool" />
-            <PropertyRef Name="AdmissionDate" />
-            <PropertyRef Name="Status" />
-          </Key>
-          <Property Name="RecordID" Type="Int32" Nullable="false" />
-          <Property Name="RollNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PreviousSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LeavingDate" Type="DateTime" Precision="0" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Teachers_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
-          <End Role="Teachers" Type="Self.Teacher" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Teachers">
-              <PropertyRef Name="TeacherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
-        <Association Name="TecaherClass">
-          <End Role="Class" Type="Self.Class" Multiplicity="*" />
-          <End Role="Teachers" Type="Self.Teacher" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="SESEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Attendances" EntityType="Self.Attendance" />
-          <EntitySet Name="Classes" EntityType="Self.Class" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
-          <EntitySet Name="Students" EntityType="Self.Student" />
-          <EntitySet Name="Teachers" EntityType="Self.Teacher" />
-          <EntitySet Name="AdmissionRecords" EntityType="Self.AdmissionRecord" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Teachers_AspNetUsers" Association="Self.FK_Teachers_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Teachers" EntitySet="Teachers" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="TecaherClass" Association="Self.TecaherClass">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="Teachers" EntitySet="Teachers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_Class" Association="SESModel.FK_Student_Class">
-            <End Role="Class" EntitySet="Classes" />
-            <End Role="Student" EntitySet="Students" />
-          </AssociationSet>
+          <EntitySet Name="Admins" EntityType="SESModel.Admin" />
+          <EntitySet Name="AdmissionRecords" EntityType="SESModel.AdmissionRecord" />
+          <EntitySet Name="Students" EntityType="SESModel.Student" />
           <AssociationSet Name="FK_Attendance_Student" Association="SESModel.FK_Attendance_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendances" />
           </AssociationSet>
-        </EntityContainer>
-        <Association Name="FK_Student_Class">
-          <End Type="SESModel.Class" Role="Class" Multiplicity="1" />
-          <End Type="SESModel.Student" Role="Student" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Class">
-              <PropertyRef Name="ClassID" />
-            </Principal>
-            <Dependent Role="Student">
-              <PropertyRef Name="ClassID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          <EntitySet Name="AspNetUsers" EntityType="SESModel.AspNetUser" />
+          <AssociationSet Name="FK_Admins_AspNetUsers" Association="SESModel.FK_Admins_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Admin" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="SESModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="SESModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Employees" EntityType="SESModel.Employee" />
+          <EntitySet Name="Teachers" EntityType="SESModel.Teacher" />
+          <AssociationSet Name="FK_Teacher_AspNetUsers1" Association="SESModel.FK_Teacher_AspNetUsers1">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Teacher" EntitySet="Teachers" />
+          </AssociationSet>
+          <EntitySet Name="Classes" EntityType="SESModel.Class" />
+          <AssociationSet Name="FK_Student_Class" Association="SESModel.FK_Student_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="TeacherClass" Association="SESModel.TeacherClass">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Teacher" EntitySet="Teachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdmissionRecord_Student" Association="SESModel.FK_AdmissionRecord_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="AdmissionRecord" EntitySet="AdmissionRecords" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_Admins_AspNetUsers" FromRole="Admin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AdmissionRecord">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int32" Nullable="false" />
+          <Property Name="RollNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousSchool" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LeavingDate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="SESModel.FK_AdmissionRecord_Student" FromRole="AdmissionRecord" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="RollNumber" />
+          </Key>
+          <Property Name="RollNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CNIC" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="FatherName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Guardian" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ContactNumber" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Attendances" Relationship="SESModel.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
+          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="SESModel.FK_Student_Class" FromRole="Student" ToRole="Class" />
+          <NavigationProperty Name="AdmissionRecords" Relationship="SESModel.FK_AdmissionRecord_Student" FromRole="Student" ToRole="AdmissionRecord" />
+        </EntityType>
         <Association Name="FK_Attendance_Student">
           <End Type="SESModel.Student" Role="Student" Multiplicity="1" />
           <End Type="SESModel.Attendance" Role="Attendance" Multiplicity="*" />
@@ -573,7 +542,159 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Admins" Relationship="SESModel.FK_Admins_AspNetUsers" FromRole="AspNetUser" ToRole="Admin" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="SESModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="SESModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <NavigationProperty Name="Teachers" Relationship="SESModel.FK_Teacher_AspNetUsers1" FromRole="AspNetUser" ToRole="Teacher" />
+        </EntityType>
+        <Association Name="FK_Admins_AspNetUsers">
+          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="SESModel.Admin" Role="Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SESModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SESModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="SESModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Designsation" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Salary" Type="Int32" Nullable="false" />
+          <Property Name="JoiningDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="LeavingDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="Teacherid" />
+          </Key>
+          <Property Name="Teacherid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CNIC" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PhoneNumber" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="JoiningDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="FatherName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Qualification" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="LeavingDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_Teacher_AspNetUsers1" FromRole="Teacher" ToRole="AspNetUser" />
+          <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Classes" Relationship="SESModel.TeacherClass" FromRole="Teacher" ToRole="Class" />
+        </EntityType>
+        <Association Name="FK_Teacher_AspNetUsers1">
+          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="SESModel.Teacher" Role="Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MonthlyFee" Type="Int32" Nullable="false" />
+          <Property Name="AnnualCharges" Type="Int32" Nullable="false" />
+          <Property Name="AdmissionFee" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="SESModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
+          <NavigationProperty Name="Teachers" Relationship="SESModel.TeacherClass" FromRole="Class" ToRole="Teacher" />
+        </EntityType>
+        <Association Name="FK_Student_Class">
+          <End Type="SESModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="SESModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TeacherClass">
+          <End Type="SESModel.Class" Role="Class" Multiplicity="*" />
+          <End Type="SESModel.Teacher" Role="Teacher" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_AdmissionRecord_Student">
+          <End Type="SESModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="SESModel.AdmissionRecord" Role="AdmissionRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="RollNumber" />
+            </Principal>
+            <Dependent Role="AdmissionRecord">
+              <PropertyRef Name="RollNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -616,41 +737,12 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="SESModel.AspNetUser">
-              <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Attendances">
             <EntityTypeMapping TypeName="SESModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Classes">
-            <EntityTypeMapping TypeName="SESModel.Class">
-              <MappingFragment StoreEntitySet="Class">
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="ClassLevel" ColumnName="ClassLevel" />
-                <ScalarProperty Name="MonthlyFee" ColumnName="MonthlyFee" />
-                <ScalarProperty Name="AnnualCharges" ColumnName="AnnualCharges" />
-                <ScalarProperty Name="AdmissionFee" ColumnName="AdmissionFee" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -665,58 +757,123 @@ warning 6002: The table/view 'SES.dbo.TecaherClass' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="SESModel.Student">
-              <MappingFragment StoreEntitySet="Student">
-                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
-                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
-                <ScalarProperty Name="Guardian" ColumnName="Guardian" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Teachers">
-            <EntityTypeMapping TypeName="SESModel.Teacher">
-              <MappingFragment StoreEntitySet="Teachers">
-                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
-                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
-                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="SESModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AdmissionRecords">
             <EntityTypeMapping TypeName="SESModel.AdmissionRecord">
               <MappingFragment StoreEntitySet="AdmissionRecord">
-                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
-                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
-                <ScalarProperty Name="PreviousSchool" ColumnName="PreviousSchool" />
-                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
-                <ScalarProperty Name="LeavingDate" ColumnName="LeavingDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LeavingDate" ColumnName="LeavingDate" />
+                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+                <ScalarProperty Name="PreviousSchool" ColumnName="PreviousSchool" />
+                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="SESModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="Guardian" ColumnName="Guardian" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="SESModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="SESModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
+            <EndProperty Name="AspNetUser">
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TecaherClass" TypeName="SESModel.TecaherClass" StoreEntitySet="TecaherClass">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="SESModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="LeavingDate" ColumnName="LeavingDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Designsation" ColumnName="Designsation" />
+                <ScalarProperty Name="lName" ColumnName="lName" />
+                <ScalarProperty Name="fName" ColumnName="fName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="SESModel.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="LeavingDate" ColumnName="LeavingDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Qualification" ColumnName="Qualification" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Teacherid" ColumnName="Teacherid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="SESModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="AdmissionFee" ColumnName="AdmissionFee" />
+                <ScalarProperty Name="AnnualCharges" ColumnName="AnnualCharges" />
+                <ScalarProperty Name="MonthlyFee" ColumnName="MonthlyFee" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TeacherClass" TypeName="SESModel.TeacherClass" StoreEntitySet="TeacherClass">
+            <EndProperty Name="Teacher">
+              <ScalarProperty Name="Teacherid" ColumnName="Teacherid" />
+            </EndProperty>
             <EndProperty Name="Class">
-              <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-            </EndProperty>
-            <EndProperty Name="Teachers">
-              <ScalarProperty Name="TeacherId" ColumnName="TeacherID" />
+              <ScalarProperty Name="ClassID" ColumnName="Classid" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
