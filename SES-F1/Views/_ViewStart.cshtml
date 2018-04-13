@@ -4,18 +4,29 @@
     //using Microsoft.AspNet.Identity;
     //using Microsoft.AspNet.Identity.EntityFramework;
 
+    string n = User.Identity.Name;
+
+    SESEntities a = new SESEntities();
+    string role;
+    try
+    {
+        role = a.AspNetUsers.Where(c => c.UserName == n).First().AspNetRoles.First().Name;
+    }catch(Exception e)
+    {
+        role = null;
+    }
     string CurrentName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
     //var context = new ApplicationDbContext();
     //var db = new SESEntities();
     //var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
     //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
     ////dynamic Layout;
-    switch (CurrentName)
+    switch (role)
     {
-        case "Admin":
+        case "admin":
             Layout = "~/Views/Shared/_AdminLayout.cshtml";
             break;
-        case "Teacher":
+        case "teacher":
             Layout = "~/Views/Shared/_TeacherLayout.cshtml";
             break;
         default:

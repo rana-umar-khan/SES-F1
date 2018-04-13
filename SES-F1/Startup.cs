@@ -98,12 +98,7 @@ namespace SES_F1
                 {
                     throw new System.Exception("Admin User can not be added");
                 }
-                Admin ad = new Admin
-                {
-                    Name = "Abdullah",
-                    AspNetUser = db.AspNetUsers.Find(user.Id)
-                };
-                db.Admins.Add(ad);
+                
                 db.SaveChanges();
                 var result = userManager.AddToRole(user.Id, adminRole);
                 if (!result.Succeeded)

@@ -122,21 +122,29 @@
             <th>RollNumber</th>
             <th>First Name</th>
         </tr>
-            
+
         @{
-        Class c = Model.Classes.FirstOrDefault();
-        List<Student> st = c.Students.ToList();
-        foreach (Student s in st)
-        {
-        <tr>
-            <td>
-                @s.RollNumber
-            </td>
-            <td>
-                @s.FirstName
-            </td>
-        </tr>
-}
+            try
+            {
+                Class c = Model.Classes.FirstOrDefault();
+                List<Student> st = c.Students.ToList();
+                foreach (Student s in st)
+                {
+                <tr>
+                    <td>
+                        @s.RollNumber
+                    </td>
+                    <td>
+                        @s.FirstName
+                    </td>
+                </tr>
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                 <p>No Classes Assigned yet. Please Contact admin</p>
+            }
+            
         }
     </table>
     </div>

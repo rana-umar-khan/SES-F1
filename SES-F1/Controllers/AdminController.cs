@@ -105,8 +105,12 @@ namespace SES_F1.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult TeacherDetails(int TeacherId)
+        public ActionResult TeacherDetails(int? TeacherId)
         {
+            if (TeacherId == null)
+            {
+                return RedirectToAction("ViewTeachers");
+            }
             Teacher t=db.Teachers.Find(TeacherId);
             return View(t);
         }
