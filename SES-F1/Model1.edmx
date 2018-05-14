@@ -15,14 +15,6 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Admins">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="userID" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
         <EntityType Name="AdmissionRecord">
           <Key>
             <PropertyRef Name="RecordID" />
@@ -160,6 +152,7 @@
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="LeavingDate" Type="date" />
           <Property Name="photo" Type="varchar(max)" />
+          <Property Name="ClassIncharge" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -171,18 +164,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <Property Name="Teacherid" Type="int" Nullable="false" />
           <Property Name="Classid" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Admins_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Admins">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AdmissionRecord_Student">
           <End Role="Student" Type="Self.Student" Multiplicity="1" />
           <End Role="AdmissionRecord" Type="Self.AdmissionRecord" Multiplicity="*" />
@@ -313,7 +294,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
         </Association>
         <EntityContainer Name="SESModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdmissionRecord" EntityType="Self.AdmissionRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -332,10 +312,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
     [TeacherClass].[Classid] AS [Classid]
     FROM [dbo].[TeacherClass] AS [TeacherClass]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_Admins_AspNetUsers" Association="Self.FK_Admins_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Admins" EntitySet="Admins" />
-          </AssociationSet>
           <AssociationSet Name="FK_AdmissionRecord_Student" Association="Self.FK_AdmissionRecord_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="AdmissionRecord" EntitySet="AdmissionRecord" />
@@ -447,7 +423,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="Attendances" EntityType="Self.Attendance" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
-          <EntitySet Name="Admins" EntityType="SESModel.Admin" />
           <EntitySet Name="AdmissionRecords" EntityType="SESModel.AdmissionRecord" />
           <EntitySet Name="Students" EntityType="SESModel.Student" />
           <AssociationSet Name="FK_Attendance_Student" Association="SESModel.FK_Attendance_Student">
@@ -455,10 +430,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             <End Role="Attendance" EntitySet="Attendances" />
           </AssociationSet>
           <EntitySet Name="AspNetUsers" EntityType="SESModel.AspNetUser" />
-          <AssociationSet Name="FK_Admins_AspNetUsers" Association="SESModel.FK_Admins_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Admin" EntitySet="Admins" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
@@ -491,15 +462,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             <End Role="AdmissionRecord" EntitySet="AdmissionRecords" />
           </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Admin">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="userID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_Admins_AspNetUsers" FromRole="Admin" ToRole="AspNetUser" />
-        </EntityType>
         <EntityType Name="AdmissionRecord">
           <Key>
             <PropertyRef Name="RecordID" />
@@ -558,24 +520,11 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Admins" Relationship="SESModel.FK_Admins_AspNetUsers" FromRole="AspNetUser" ToRole="Admin" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="SESModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="SESModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="Teachers" Relationship="SESModel.FK_Teacher_AspNetUsers1" FromRole="AspNetUser" ToRole="Teacher" />
         </EntityType>
-        <Association Name="FK_Admins_AspNetUsers">
-          <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="SESModel.Admin" Role="Admin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Admin">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -641,6 +590,7 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <NavigationProperty Name="AspNetUser" Relationship="SESModel.FK_Teacher_AspNetUsers1" FromRole="Teacher" ToRole="AspNetUser" />
           <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Classes" Relationship="SESModel.TeacherClass" FromRole="Teacher" ToRole="Class" />
+          <Property Name="ClassIncharge" Type="Int32" />
         </EntityType>
         <Association Name="FK_Teacher_AspNetUsers1">
           <End Type="SESModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -757,15 +707,6 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Admins">
-            <EntityTypeMapping TypeName="SESModel.Admin">
-              <MappingFragment StoreEntitySet="Admins">
-                <ScalarProperty Name="userID" ColumnName="userID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AdmissionRecords">
             <EntityTypeMapping TypeName="SESModel.AdmissionRecord">
               <MappingFragment StoreEntitySet="AdmissionRecord">
@@ -837,6 +778,7 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <EntitySetMapping Name="Teachers">
             <EntityTypeMapping TypeName="SESModel.Teacher">
               <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="ClassIncharge" ColumnName="ClassIncharge" />
                 <ScalarProperty Name="photo" ColumnName="photo" />
                 <ScalarProperty Name="LeavingDate" ColumnName="LeavingDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

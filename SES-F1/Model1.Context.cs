@@ -31,7 +31,6 @@ namespace SES_F1
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
-        public virtual DbSet<Admin> Admins { get; set; }
         public virtual DbSet<AdmissionRecord> AdmissionRecords { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }

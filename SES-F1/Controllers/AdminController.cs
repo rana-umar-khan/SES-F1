@@ -115,8 +115,9 @@ namespace SES_F1.Controllers
             return View(t);
         }
         [HttpPost]
-        public ActionResult AddTeacher(Teacher t)
-        {
+        public ActionResult AddTeacher(Teacher t,HttpPostedFileBase photo)
+        { 
+            //Teacher t = new Teacher(ad);
             ApplicationUser user=new ApplicationUser();
             if (!ModelState.IsValid)
                 return View("Error");
@@ -170,12 +171,56 @@ namespace SES_F1.Controllers
                 userManager.Delete(user);
                 ViewBag.Message = "Error Occurred. Teacher not added"+e.Message;
             }
+            SaveTeacherPhoto(photo, t.Teacherid);
 
             ViewBag.Message = "Teacher added successfully /n Username=" + t.AspNetUser.UserName+"/nPassword= Password.12";
 
             return RedirectToAction("ViewTeachers");
         }
+        public bool SaveTeacherPhoto(HttpPostedFileBase file, int? TeacherId)
+        {
+            if (file != null)
+            {
+                Teacher t = db.Teachers.Find(TeacherId);
+                string pic = System.IO.Path.GetFileName(file.FileName);
 
+                string savePath = System.IO.Path.Combine(Server.MapPath("~/Content/Images"), t.AspNetUser.UserName + ".jpg");
+                string path = "/Content/Images/" + t.AspNetUser.UserName + ".jpg";
+
+                // file is uploaded
+                file.SaveAs(savePath);
+                t.photo = path;
+                // save the image path path to the database or you can send imaxge 
+                // directly to database
+                // in-case if you want to store byte[] ie. for DB
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    //file.InputStream.CopyTo(ms);
+                    //byte[] array = ms.GetBuffer();
+                    //Image bigImage = new Bitmap(path);
+
+                    //// Algorithm simplified for purpose of example.
+                    //int height = bigImage.Height / 10;
+                    //int width = bigImage.Width / 10;
+                    // Now create a thumbnail
+                    //using (Image smallImage = bigImage.GetThumbnailImage(120, 120, new Image.GetThumbnailImageAbort(Abort), IntPtr.Zero))
+                    //{
+                    //    //smallImage.Save("D:\\thumbnail.jpg", ImageFormat.Jpeg);
+                    //    //MemoryStream tms = new MemoryStream();
+                    //    //smallImage.Save(tms, ImageFormat.Jpeg);
+                    //    //byte[] arr = tms.GetBuffer();
+                    //    //t.thumb = arr;
+                    //    //t.TeacherId = (int)TeacherId;
+                    //    //t.Photo = array;
+                    //}
+
+                    db.SaveChanges();
+                }
+
+            }
+            // after successfully uploading redirect the user
+            return true;
+        }
         [HttpGet]
         public ActionResult UploadTeacherPhoto()
         {
@@ -289,6 +334,24 @@ namespace SES_F1.Controllers
         private bool Abort()
         {
             throw new NotImplementedException();
+        }
+
+
+
+
+        //ASSIGN TEACHER A CLASS
+        public ActionResult AssignClass()
+        {
+            IEnumerable<Teacher> teachers = db.Teachers.AsEnumerable();
+           
+            return View(teachers);
+        }
+        [HttpPost]
+        public ActionResult AssignClass(string teacher,string Class)
+        {
+            IEnumerable<Teacher> teachers = db.Teachers.AsEnumerable();
+
+            return View(teachers);
         }
     }
 }

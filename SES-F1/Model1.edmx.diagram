@@ -11,12 +11,10 @@
         <EntityTypeShape EntityType="SESModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SESModel.Attendance" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SESModel.Log" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SESModel.Admin" Width="1.5" PointX="5.25" PointY="13" />
         <EntityTypeShape EntityType="SESModel.AdmissionRecord" Width="2.375" PointX="7.375" PointY="9.5" />
         <EntityTypeShape EntityType="SESModel.Student" Width="1.5" PointX="8.25" PointY="13.5" />
         <AssociationConnector Association="SESModel.FK_Attendance_Student" />
         <EntityTypeShape EntityType="SESModel.AspNetUser" Width="1.5" PointX="3" PointY="2.625" />
-        <AssociationConnector Association="SESModel.FK_Admins_AspNetUsers" />
         <AssociationConnector Association="SESModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="SESModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="SESModel.AspNetUserRoles" />

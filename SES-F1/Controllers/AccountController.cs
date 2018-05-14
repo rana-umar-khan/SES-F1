@@ -121,7 +121,7 @@ namespace SES_F1.Controllers
                         var roles = await UserManager.GetRolesAsync(user.Id);
                         if (returnUrl != null)
                         {
-                            RedirectToLocal(returnUrl);
+                            return RedirectToLocal(returnUrl);
                         }
                         if (roles.Contains("admin"))
                         {   

@@ -1,0 +1,18 @@
+﻿
+
+<h2>Mark Attendance</h2>
+
+@{
+    int c = ViewBag.ClassID;
+
+}
+
+@using (Html.BeginForm("MarkAttendance", "Teacher", new { classID = ViewBag.ClassID } ,FormMethod.Post,
+                       new { enctype = "multipart/form-data" }))
+{
+    <label>Pick Date: </label>
+    <br />
+    <input name="date" type="date" id="date" />
+    <br /><br />
+    <input type="submit" class="btn btn-primary" value="Submit" />
+}

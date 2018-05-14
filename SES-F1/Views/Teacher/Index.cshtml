@@ -1,4 +1,4 @@
-﻿@model SES_F1.Teacher
+﻿@model IEnumerable<SES_F1.Class>
 
 @{
     ViewBag.Title = "Index";
@@ -6,146 +6,44 @@
 
 <h2>Index</h2>
 
-<div>
-    <h4>Teacher</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+@ViewBag.Message
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Class Name
+        </th>
+        <th>
+            Total Students
+        </th>
+        <th>
+            Grade
+        </th>
+        <th>
+            Attendance
+        </th>
+    </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Students.Count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassName)
+        </td>
+        <td>
+            @Html.ActionLink("Mark Attendance", "Attendance","Teacher", new { ClassID = item.ClassID },new { @class= "btn" } );
+</td>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DOB)
-        </dt>
+</tr>
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.DOB)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CNIC)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CNIC)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.JoiningDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.JoiningDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FatherName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FatherName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Qualification)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Qualification)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LeavingDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LeavingDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.photo)
-        </dt>
-
-        <dd>
-           <img src="@Model.photo" height="200" width="200" />
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AspNetUser.Email)
-        </dd>
-
-    </dl>
-    <div>
-    <h2>Students</h2>
-    <table class="table-bordered">
-        <tr>
-            <th>RollNumber</th>
-            <th>First Name</th>
-        </tr>
-
-        @{
-            try
-            {
-                Class c = Model.Classes.FirstOrDefault();
-                List<Student> st = c.Students.ToList();
-                foreach (Student s in st)
-                {
-                <tr>
-                    <td>
-                        @s.RollNumber
-                    </td>
-                    <td>
-                        @s.FirstName
-                    </td>
-                </tr>
-                }
-            }
-            catch (NullReferenceException e)
-            {
-                 <p>No Classes Assigned yet. Please Contact admin</p>
-            }
-            
-        }
-    </table>
-    </div>
-</div>
+</table>

@@ -34,6 +34,7 @@ namespace SES_F1
         public bool Status { get; set; }
         public Nullable<System.DateTime> LeavingDate { get; set; }
         public string photo { get; set; }
+        public Nullable<int> ClassIncharge { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
