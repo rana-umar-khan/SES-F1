@@ -19,6 +19,12 @@ namespace SES_F1.Controllers
         SESEntities db = new SESEntities();
 
 
+        [HttpGet]
+        public ActionResult ErrorPage()
+        {
+            return View();
+        }
+
 
         // GET: Teacher
 
@@ -31,15 +37,20 @@ namespace SES_F1.Controllers
         }
 
 
-        public ActionResult Attendance(int classID)
+        public ActionResult Attendance(int? classID)
         {
+            if(classID==null)
+            {
+                ViewBag.Message = "You are not the class Incharge";
+                return View("ErrorPage");
+            }
             ViewBag.ClassID = classID;
             AspNetUser u = db.AspNetUsers.Find(User.Identity.GetUserId());
             Teacher t = u.Teachers.FirstOrDefault();
             if (t.ClassIncharge == null || t.ClassIncharge != classID)
             {
                 ViewBag.Message = "You are not the class Incharge";
-                return RedirectToAction("index", new { message = "You are not the class Incharge" });
+                return View("ErrorPage");
             }
             else
             {
@@ -47,8 +58,12 @@ namespace SES_F1.Controllers
             }
         }
 
-        public ActionResult MarkAttendance(int classID, DateTime date)
+        public ActionResult MarkAttendance(int? classID, DateTime? date)
         {
+            if (classID == null || date == null)
+            {
+                return RedirectToAction("Index");
+            }
             AspNetUser u = db.AspNetUsers.Find(User.Identity.GetUserId());
             Teacher t = u.Teachers.FirstOrDefault();
             if (t.ClassIncharge == null || t.ClassIncharge != classID )
@@ -59,7 +74,7 @@ namespace SES_F1.Controllers
             else
             {
                 IEnumerable<Student>st_List= t.Classes.Where(c => c.ClassID == classID).FirstOrDefault().Students.AsEnumerable();
-                MarkAttendanceModel sheat=new MarkAttendanceModel(classID, date);
+                MarkAttendanceModel sheat=new MarkAttendanceModel((int)classID, (DateTime)date);
                 return View(sheat);
             }
         }
@@ -69,7 +84,6 @@ namespace SES_F1.Controllers
         //RESULTS
         public ActionResult ResultSheets(int classID)
         {
-            
             return View();
         }
     }

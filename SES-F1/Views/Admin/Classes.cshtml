@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SES_F1.Class>
+
+@{
+    ViewBag.Title = "Classes";
+}
+
+<h2>Classes</h2>
+
+
+<div class="row">
+    <div class="col">
+        @foreach (var item in Model)
+        {
+          <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                        @Html.DisplayFor(modelItem => item.ClassName)
+                        <div>
+                            <label>Class Incharge: </label>
+                            @item.Teachers.FirstOrDefault().FirstName
+                        </div>
+                        </div>
+                        <div class="card-body">
+
+                            @Html.DisplayFor(modelItem => item.MonthlyFee)
+                            <br />
+                            @Html.DisplayFor(modelItem => item.AnnualCharges)
+                            <br />
+                            Students: 
+                            @Html.DisplayFor(modelItem => item.Students.Count)
+                            
+                            <br />
+                            @Html.DisplayFor(modelItem => item.AdmissionFee)
+                            <br />
+                            @Html.ActionLink("Details", "ViewClass", new { classId = item.ClassID })
+
+                        </div>
+                    </div>
+                </div>
+          </div>
+         }
+    </div>
+</div>

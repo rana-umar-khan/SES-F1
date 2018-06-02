@@ -20,7 +20,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44336</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -448,6 +448,10 @@
     <Content Include="Views\Admin\AssignClass.cshtml" />
     <Content Include="Views\Teacher\Attendance.cshtml" />
     <Content Include="Views\Teacher\MarkAttendance.cshtml" />
+    <Content Include="Views\Teacher\ErrorPage.cshtml" />
+    <Content Include="Views\Admin\Classes.cshtml" />
+    <Content Include="Views\Admin\ErrorPage.cshtml" />
+    <Content Include="Views\Admin\ViewClass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

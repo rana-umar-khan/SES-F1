@@ -6,8 +6,9 @@
     <title>@ViewBag.Title - Smart Education System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
     <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
-    
+
 </head>
 <body>
     <div id="wrapper">
@@ -43,8 +44,8 @@
         <!-- /#page-content-wrapper -->
     </div>
     <!----wrapper---->
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
+   @* @Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/sideBar.js"></script>
 </body>

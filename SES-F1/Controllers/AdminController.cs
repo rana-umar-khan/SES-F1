@@ -29,11 +29,22 @@ namespace SES_F1.Controllers
             userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         }
 
+        public string getText()
+        {
+            string str="Umar Khan";
+            return str;
+        }
 
         // GET: Admin
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Classes()
+        {
+            IEnumerable<Class> classes = db.Classes.AsEnumerable();
+            return View(classes);
         }
 
         [HttpGet]
@@ -126,6 +137,7 @@ namespace SES_F1.Controllers
             {
                 var role = new IdentityRole
                 {
+                    
                     Name = teacherRole
                 };
                 var result = roleManager.Create(role);
@@ -335,23 +347,59 @@ namespace SES_F1.Controllers
         {
             throw new NotImplementedException();
         }
-
+        [HttpGet]
+        public ActionResult ErrorPage()
+        {
+            return View();
+        }
 
 
 
         //ASSIGN TEACHER A CLASS
         public ActionResult AssignClass()
         {
+
             IEnumerable<Teacher> teachers = db.Teachers.AsEnumerable();
-           
             return View(teachers);
         }
         [HttpPost]
         public ActionResult AssignClass(string teacher,string Class)
         {
-            IEnumerable<Teacher> teachers = db.Teachers.AsEnumerable();
+            int tID=0;
+            int cID = 0;
+            for (int i = 0; i < teacher.Length; i++)
+            {
+                if(teacher[i]>= '0' && teacher[i] <= '9')
+                {
+                    tID = (teacher[i] - 48)+ i*10;
+                }
+            }
+            for (int i = 0; i < Class.Length; i++)
+            {
+                if (Class[i] >= '0' && Class[i] <= '9')
+                {
+                    cID = (Class[i] - 48) + i * 10;
+                }
+            }
 
+            Teacher t = db.Teachers.Find(tID);
+            Class c = db.Classes.Find(cID);
+            t.Classes.Add(c);
+            ViewBag.Message = "Teacher "+t.FirstName+" "+t.LastName+" has been assigned class "+c.ClassName+".";
+            IEnumerable<Teacher> teachers = db.Teachers.AsEnumerable();
             return View(teachers);
+        }
+
+        [HttpGet]
+        public ActionResult ViewClass(int classID)
+        {
+            Class c = db.Classes.Where(item => item.ClassID == classID).First();
+            if (c == null)
+            {
+                ViewBag.Message = "Class doesnot Exist. Please contact admin.";
+                return View("ErrorPage");
+            }
+            return View(c);
         }
     }
 }

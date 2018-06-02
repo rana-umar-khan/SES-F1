@@ -6,6 +6,9 @@
     <title>@ViewBag.Title - Smart Education System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
     <link href="~/Content/simple-sidebar.css" rel="stylesheet">
 </head>
@@ -15,13 +18,13 @@
 
 
         <div id="sidebar-wrapper">
-
+            
             <ul class="sidebar-nav list-group" style="padding-top:55px">
                 <li><a href="#"><i class="fa fa-graduation-cap"></i> Teachers</</a> </li>
                 <li><a href="#"><i class="fa fa-address-card"></i> Admission</</a> </li>
                 <li><a href="#"><i class="fa fa-book"></i> Students</</a> </li>
                 <li><a href="#"><i class="fas fa-money-bill-alt"></i> Fees</</a> </li>
-                <li><a href="#"><i class="fa fa-users"></i> Classes</</a> </li>
+                <li><a href="~/Admin/Classes/"><i class="fa fa-users"></i> Classes</</a> </li>
             </ul>
         </div>
 
@@ -59,8 +62,6 @@
         <!-- /#page-content-wrapper -->
     </div>
     <!----wrapper---->
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/sideBar.js"></script>

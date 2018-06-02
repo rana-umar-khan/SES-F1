@@ -13,11 +13,14 @@ namespace SES_F1.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private  ApplicationDbContext dbContext= new ApplicationDbContext(); 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public ManageController()
         {
+            //ApplicationUser u = _userManager.FindById("dd");
+
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -42,6 +45,7 @@ namespace SES_F1.Controllers
         {
             get
             {
+
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set

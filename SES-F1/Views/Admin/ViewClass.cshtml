@@ -1,0 +1,92 @@
+﻿@model SES_F1.Class
+
+@{
+    ViewBag.Title = "ViewClass";
+}
+
+
+
+<h2>ViewClass</h2>
+
+<div>
+    <h4>Class</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+
+        <dd>
+            @{ 
+                var t = Model.Teachers.AsEnumerable();
+                foreach (var item in t)
+                {
+                    <p>
+                        @item.FirstName
+                    </p>
+                }
+            }
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+
+        <dt id="swe">
+           <button id="btn1" class="btn">View Students</button>
+        </dt>
+        <div id="test"></div>
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MonthlyFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MonthlyFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnnualCharges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualCharges)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdmissionFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdmissionFee)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+
+<script>
+        $(document).ready(function () {
+            $('#btn1').on('click', function () {
+                var stds = $('<p>Showing Students</p>');
+                $.get("http://localhost:54195/Admin/index", function (data, status) {
+                    $("#test").html(data);
+                    alert(status);
+                });
+                $('#swe').append(stds);
+                $('#btn1').remove();
+            });
+    });
+
+    $(document).ready(function () {
+        
+    });
+    
+</script>
+

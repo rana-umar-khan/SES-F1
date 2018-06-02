@@ -15,7 +15,7 @@ namespace SES_F1.Models
         public List<bool> YesterdayStatus { get; set; }
         public DateTime date { get; set; }
         public DateTime yDate { get; set; }
-
+        public SESEntities Db { get => db; set => db = value; }
 
         SESEntities db = new SESEntities();
 
@@ -23,7 +23,7 @@ namespace SES_F1.Models
         {
             date = onDate;
             yDate = date.AddDays(-1);
-            Class c=db.Classes.Find(classID);
+            Class c=Db.Classes.Find(classID);
             List<Student> st_List = c.Students.ToList();
             bool markedToday = isAttendanceMarked(classID, date);
             bool markedYesterday = isAttendanceMarked(classID,yDate );
@@ -52,7 +52,7 @@ namespace SES_F1.Models
 
         private bool isAttendanceMarked(int classID, DateTime onDate)
         {
-            if ((db.Classes.Find(classID).Students.FirstOrDefault().Attendances.Where(d => d.Date == onDate)).Count() > 0)
+            if ((Db.Classes.Find(classID).Students.FirstOrDefault().Attendances.Where(d => d.Date == onDate)).Count() > 0)
                 return true;
             return false;
         }
