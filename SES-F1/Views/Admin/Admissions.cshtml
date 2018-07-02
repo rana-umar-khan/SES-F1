@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Admissions";
+}
+
+<h2>Admissions</h2>
+
+
+<form>
+    <input class="btn btn-primary" type="button" value="Admit new Student" onclick="window.location.href='AddStudent'" />
+</form>
+
+<div>
+    <iframe src="http://localhost:54195/" id="PDFtoPrint"></iframe>
+    <input type="button" value="Print" onclick="document.getElementById('PDFtoPrint').focus(); document.getElementById('PDFtoPrint').contentWindow.print();" />
+</div>

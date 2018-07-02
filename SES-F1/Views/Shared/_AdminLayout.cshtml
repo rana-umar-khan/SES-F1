@@ -18,13 +18,13 @@
 
 
         <div id="sidebar-wrapper">
-            
             <ul class="sidebar-nav list-group" style="padding-top:55px">
-                <li><a href="#"><i class="fa fa-graduation-cap"></i> Teachers</</a> </li>
-                <li><a href="#"><i class="fa fa-address-card"></i> Admission</</a> </li>
-                <li><a href="#"><i class="fa fa-book"></i> Students</</a> </li>
-                <li><a href="#"><i class="fas fa-money-bill-alt"></i> Fees</</a> </li>
+                <li><a href="~/Admin/ViewTeachers"><i class="fa fa-graduation-cap"></i> Teachers</</a> </li>
+                <li><a href="~/Admin/Admissions"><i class="fa fa-address-card"></i> Admission</</a> </li>
+                <li><a href="~/Admin/ViewStudents"><i class="fa fa-book"></i> Students</</a> </li>
+                <li><a href="~/Admin/Fees"><i class="fas fa-money-bill-alt"></i> Fees</</a> </li>
                 <li><a href="~/Admin/Classes/"><i class="fa fa-users"></i> Classes</</a> </li>
+                <li><a href="~/Admin/Exams/"><i class="fa fa-pencil-alt"></i> Exams</</a> </li>
             </ul>
         </div>
 
@@ -42,7 +42,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarsExample04">
                     <ul class="navbar-nav mr-auto">
-                        <li>@Html.ActionLink("Home", "Index", new { controller = "Home" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Home", "Index","Admin", new { controller = "Home" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("About", "About", new { controller = "Home" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("Contact", "Contact", new { controller = "Home" }, new { @class = "nav-link" })</li>
 

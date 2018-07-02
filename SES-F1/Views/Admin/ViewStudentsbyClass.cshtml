@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SES_F1.Student>
+<div class="container-fluid pre-scrollable">
+    <table class="table table-bordered table-hover table-responsive">
+        <tr>
+            <th>Photo</th>
+            <th>RollNumber</th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.photo" height="125" width="125" />
+                </td>
+                <td>@item.RollNumber</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.RollNumber })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

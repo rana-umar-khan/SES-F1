@@ -1,0 +1,53 @@
+﻿<br />
+<h2>Add New Exam</h2>
+
+@{
+    SESEntities s = new SESEntities();
+    List<Class> c = s.Classes.ToList();
+}
+
+<label>Select Class:</label>
+<select class="form-control" id="classSelector" name="classSelector">
+    @for (int i = 0; i < c.Count; i++)
+    {
+        <option value="@c.ElementAt(i).ClassID">
+            @c.ElementAt(i).ClassName
+        </option>
+    }
+</select>
+<br />
+<label>Enter Exam Name: </label>
+<input class="form-control" type="text" id="examName" />
+<br />
+<label>Select Date: </label>
+<br />
+<input class="custom-select" type="date" id="date" />
+<br /><br />
+<input class="btn btn-primary" id="AddExam" type="button" value="Add" />
+
+
+<script>
+    $(document).ready(function () {
+        $("#AddExam").on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AddExam",
+                data: {
+                    "classID": $("#classSelector").val(),
+                    "examName": $("#examName").val(),
+                    "date": $("#date").val()
+                },
+                success: function (response) {
+                    alert(response);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            });
+        });
+    });
+</script>

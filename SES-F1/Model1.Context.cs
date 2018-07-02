@@ -37,5 +37,10 @@ namespace SES_F1
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
+        public virtual DbSet<Fee> Fees { get; set; }
+        public virtual DbSet<Exam> Exams { get; set; }
+        public virtual DbSet<Result> Results { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<ResultSheet> ResultSheets { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace SES_F1
         {
             this.Attendances = new HashSet<Attendance>();
             this.AdmissionRecords = new HashSet<AdmissionRecord>();
+            this.ResultSheets = new HashSet<ResultSheet>();
         }
     
         public string RollNumber { get; set; }
@@ -37,5 +38,7 @@ namespace SES_F1
         public virtual Class Class { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdmissionRecord> AdmissionRecords { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResultSheet> ResultSheets { get; set; }
     }
 }

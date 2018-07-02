@@ -1,0 +1,28 @@
+﻿@model SES_F1.Result
+<br />
+<form action="/Teacher/AddResultSheet" class="form-control" method="post">
+    <label>Class: </label>
+    <p>@Model.Exam.Class.ClassName</p>
+
+    <label>Exam: </label>
+    <p>@Model.Exam.Name</p>
+
+    <input id="classID" name="classID" hidden="hidden" class="form-control" value="@Model.Exam.ClassID" />
+    <input id="ExamID" name="ExamID" class="form-control" hidden="hidden" value="@Model.ExamID" />
+    <label>Select Subject:</label>
+    <br />
+    @{ SESEntities s = new SESEntities();
+        List<Subject> subjects = s.Subjects.Where(i => i.ClassID == Model.Exam.ClassID).ToList();
+    }
+
+    <select name="subID" id="subID" class="form-control">
+        @foreach (var item in subjects)
+        {
+            <option value="@item.Id">
+                @item.Name
+            </option>
+        }
+    </select>
+    <br />
+    <input class="btn" type="submit" value="Add ResultSheet" />
+</form>

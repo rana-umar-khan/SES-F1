@@ -6,85 +6,93 @@
 
 <h2>ViewStudent</h2>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    //the following are search options
+    <b > Search Option: </b>@Html.RadioButton("option", "Name") <text>Name</text> @Html.RadioButton("option", "Gender") <text > Gender </text>
+    @Html.RadioButton("option", "Subjects")<text>Subject</text> @Html.TextBox("search") <input type = "submit" name = "submit" value = "Search" />
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+    <div>
+        <h4>Student</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CNIC)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CNIC)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FatherName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.CNIC)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FatherName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CNIC)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Guardian)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Guardian)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.FatherName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactNumber)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Guardian)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ContactNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Guardian)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.photo)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.photo)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ContactNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.status)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.photo)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.status)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.photo)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Class.ClassName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Class.ClassName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.status)
+            </dd>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.RollNumber }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            <dt>
+                @Html.DisplayNameFor(model => model.Class.ClassName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Class.ClassName)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.RollNumber }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

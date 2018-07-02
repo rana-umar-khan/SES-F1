@@ -1,0 +1,122 @@
+﻿@model SES_F1.Models.MarkAttendanceModel
+
+@{
+    Layout = null;
+}
+<div class="row" id="sheetframe">
+    <div class="col-12" style="padding-top:8px">
+        <div class="card">
+            <div class="card-header">
+                <h4>Attendance Sheet</h4>
+                <div class="card-body">
+                    <div class="row">
+                        <form class="form-inline">
+                            <div class="checkbox">
+                                <label>
+                                    <pre><input id="sms" type="checkbox" /> Send SMS on Absent</pre>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class=" table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Roll#</th>
+                                    <th><input id="smsbox" type="checkbox" /> Status</th>
+                                    <th>Yesterday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.RollNumber.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@Model.Name[i]</td>
+                                        <td id="rollnum @i">@Model.RollNumber[i]</td>
+                                    @if (Model.TodayStatus[i])
+                                    {
+                                        <td><input id="checkbox @i" type="checkbox" checked="checked" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td><input type="checkbox" id="checkbox @i" /></td>
+                                    }
+                                    @if (Model.YesterdayStatus[i])
+                                    {
+                                        <td><p style="color:green">  Present</p></td>
+                                    }
+                                    else
+                                    {
+                                        <td><p style="color:red">  Absent</p></td>
+                                    }
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="submitAttendance" type="button" class="btn btn-primary">
+                        Save Attendance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function parseDate(s) {
+            var b = s.split(/\D/);
+            return new Date(b[2], --b[0], b[1]);
+        }
+        $("#submitAttendance").on('click', function () {
+
+            var statuslist = Array(@Model.RollNumber.Count);
+            var rollnumbers = Array(@Model.RollNumber.Count);
+            @{int j = 0; }
+
+            for (var i = 0; i <@Model.RollNumber.Count; i++) {
+
+                rollnumbers[i] = (document.getElementById("rollnum " + i)).innerText;
+
+            }
+
+            for (var i = 0; i <@Model.RollNumber.Count; i++) {
+                var ch = (document.getElementById("checkbox " + i));
+                if (ch.checked) {
+                    statuslist[i] = true;
+                }
+                else {
+                    statuslist[i] = false;
+                }
+            }
+            var smss = document.getElementById('smsbox').checked;
+            var attendance = {
+                "date": document.getElementById("AttendanceDate").value,
+                "sms": smss,
+                "classID": @Model.ClassID,
+                "statuslist": statuslist,
+                "RollNumbers": rollnumbers
+            };
+
+            //Ajax
+            var setting = ({
+                url: "/Teacher/saveAttendance",
+                type: "Post",
+                datatype: 'html',
+                traditional: 'yes',
+                data: attendance,
+                success: function (rData) {
+                    alert(rData);
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+            $.ajax(setting);
+        });
+        
+    });
+</script>

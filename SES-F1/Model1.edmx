@@ -109,6 +109,24 @@
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="LeavingDate" Type="date" />
         </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="RollNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MonthlyFeeID" Type="int" Nullable="false" />
+          <Property Name="StartingDate" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="LogID" />
@@ -118,6 +136,30 @@
           <Property Name="Details" Type="varchar(max)" />
           <Property Name="Date" Type="date" />
           <Property Name="Time" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="ResultBridge">
+          <Key>
+            <PropertyRef Name="ResultID" />
+            <PropertyRef Name="SheetID" />
+          </Key>
+          <Property Name="ResultID" Type="int" Nullable="false" />
+          <Property Name="SheetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Results">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExamID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResultSheet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RollNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Subject" Type="int" Nullable="false" />
+          <Property Name="MarksObtained" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -133,6 +175,14 @@
           <Property Name="ContactNumber" Type="money" Nullable="false" />
           <Property Name="photo" Type="varchar" MaxLength="50" />
           <Property Name="status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subjects">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Teacher">
           <Key>
@@ -154,8 +204,6 @@
           <Property Name="photo" Type="varchar(max)" />
           <Property Name="ClassIncharge" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TeacherClass">
           <Key>
             <PropertyRef Name="Teacherid" />
@@ -244,6 +292,78 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Exam_ToClass">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResultBridge_ToResult">
+          <End Role="Results" Type="Self.Results" Multiplicity="1" />
+          <End Role="ResultBridge" Type="Self.ResultBridge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Results">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResultBridge">
+              <PropertyRef Name="ResultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResultBridge_ToResultSheet">
+          <End Role="ResultSheet" Type="Self.ResultSheet" Multiplicity="1" />
+          <End Role="ResultBridge" Type="Self.ResultBridge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResultSheet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResultBridge">
+              <PropertyRef Name="SheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Results_ToExam">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+          <End Role="Results" Type="Self.Results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Results">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResultSheet_ToStudent">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="ResultSheet" Type="Self.ResultSheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="RollNumber" />
+            </Principal>
+            <Dependent Role="ResultSheet">
+              <PropertyRef Name="RollNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResultSheet_ToSubject">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="ResultSheet" Type="Self.ResultSheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResultSheet">
+              <PropertyRef Name="Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Class">
           <End Role="Class" Type="Self.Class" Multiplicity="1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
@@ -252,6 +372,18 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
               <PropertyRef Name="ClassID" />
             </Principal>
             <Dependent Role="Student">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subjects_ToClass">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="Subjects">
               <PropertyRef Name="ClassID" />
             </Dependent>
           </ReferentialConstraint>
@@ -303,15 +435,16 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exam" EntityType="Self.Exam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fees" EntityType="Self.Fees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResultBridge" EntityType="Self.ResultBridge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Results" EntityType="Self.Results" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResultSheet" EntityType="Self.ResultSheet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TeacherClass" EntityType="Self.TeacherClass" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TeacherClass].[Teacherid] AS [Teacherid], 
-    [TeacherClass].[Classid] AS [Classid]
-    FROM [dbo].[TeacherClass] AS [TeacherClass]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="TeacherClass" EntityType="Self.TeacherClass" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AdmissionRecord_Student" Association="Self.FK_AdmissionRecord_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="AdmissionRecord" EntitySet="AdmissionRecord" />
@@ -336,9 +469,37 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_Exam_ToClass" Association="Self.FK_Exam_ToClass">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Exam" EntitySet="Exam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResultBridge_ToResult" Association="Self.FK_ResultBridge_ToResult">
+            <End Role="Results" EntitySet="Results" />
+            <End Role="ResultBridge" EntitySet="ResultBridge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResultBridge_ToResultSheet" Association="Self.FK_ResultBridge_ToResultSheet">
+            <End Role="ResultSheet" EntitySet="ResultSheet" />
+            <End Role="ResultBridge" EntitySet="ResultBridge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Results_ToExam" Association="Self.FK_Results_ToExam">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Results" EntitySet="Results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResultSheet_ToStudent" Association="Self.FK_ResultSheet_ToStudent">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="ResultSheet" EntitySet="ResultSheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResultSheet_ToSubject" Association="Self.FK_ResultSheet_ToSubject">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="ResultSheet" EntitySet="ResultSheet" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
             <End Role="Class" EntitySet="Class" />
             <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subjects_ToClass" Association="Self.FK_Subjects_ToClass">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Subjects" EntitySet="Subjects" />
           </AssociationSet>
           <AssociationSet Name="FK_Teacher_AspNetUsers1" Association="Self.FK_Teacher_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -461,6 +622,35 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             <End Role="Student" EntitySet="Students" />
             <End Role="AdmissionRecord" EntitySet="AdmissionRecords" />
           </AssociationSet>
+          <EntitySet Name="Fees" EntityType="SESModel.Fee" />
+          <EntitySet Name="Exams" EntityType="SESModel.Exam" />
+          <EntitySet Name="Results" EntityType="SESModel.Result" />
+          <AssociationSet Name="FK_Exam_ToClass" Association="SESModel.FK_Exam_ToClass">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Exam" EntitySet="Exams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Results_ToExam" Association="SESModel.FK_Results_ToExam">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Result" EntitySet="Results" />
+          </AssociationSet>
+          <EntitySet Name="Subjects" EntityType="SESModel.Subject" />
+          <EntitySet Name="ResultSheets" EntityType="SESModel.ResultSheet" />
+          <AssociationSet Name="FK_ResultSheet_ToStudent" Association="SESModel.FK_ResultSheet_ToStudent">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="ResultSheet" EntitySet="ResultSheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResultSheet_ToSubject" Association="SESModel.FK_ResultSheet_ToSubject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="ResultSheet" EntitySet="ResultSheets" />
+          </AssociationSet>
+          <AssociationSet Name="ResultBridge" Association="SESModel.ResultBridge">
+            <End Role="Result" EntitySet="Results" />
+            <End Role="ResultSheet" EntitySet="ResultSheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subjects_ToClass" Association="SESModel.FK_Subjects_ToClass">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Subject" EntitySet="Subjects" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="AdmissionRecord">
           <Key>
@@ -491,6 +681,7 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <Property Name="status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Class" Relationship="SESModel.FK_Student_Class" FromRole="Student" ToRole="Class" />
           <NavigationProperty Name="AdmissionRecords" Relationship="SESModel.FK_AdmissionRecord_Student" FromRole="Student" ToRole="AdmissionRecord" />
+          <NavigationProperty Name="ResultSheets" Relationship="SESModel.FK_ResultSheet_ToStudent" FromRole="Student" ToRole="ResultSheet" />
         </EntityType>
         <Association Name="FK_Attendance_Student">
           <End Type="SESModel.Student" Role="Student" Multiplicity="1" />
@@ -615,6 +806,8 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
           <Property Name="AdmissionFee" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="SESModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
           <NavigationProperty Name="Teachers" Relationship="SESModel.TeacherClass" FromRole="Class" ToRole="Teacher" />
+          <NavigationProperty Name="Exams" Relationship="SESModel.FK_Exam_ToClass" FromRole="Class" ToRole="Exam" />
+          <NavigationProperty Name="Subjects" Relationship="SESModel.FK_Subjects_ToClass" FromRole="Class" ToRole="Subject" />
         </EntityType>
         <Association Name="FK_Student_Class">
           <End Type="SESModel.Class" Role="Class" Multiplicity="1" />
@@ -641,6 +834,121 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             </Principal>
             <Dependent Role="AdmissionRecord">
               <PropertyRef Name="RollNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Fee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RollNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MonthlyFeeID" Type="Int32" Nullable="false" />
+          <Property Name="StartingDate" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="SESModel.FK_Exam_ToClass" FromRole="Exam" ToRole="Class" />
+          <NavigationProperty Name="Results" Relationship="SESModel.FK_Results_ToExam" FromRole="Exam" ToRole="Result" />
+        </EntityType>
+        <EntityType Name="Result">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExamID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Exam" Relationship="SESModel.FK_Results_ToExam" FromRole="Result" ToRole="Exam" />
+          <NavigationProperty Name="ResultSheets" Relationship="SESModel.ResultBridge" FromRole="Result" ToRole="ResultSheet" />
+        </EntityType>
+        <Association Name="FK_Exam_ToClass">
+          <End Type="SESModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="SESModel.Exam" Role="Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Results_ToExam">
+          <End Type="SESModel.Exam" Role="Exam" Multiplicity="1" />
+          <End Type="SESModel.Result" Role="Result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ResultSheets" Relationship="SESModel.FK_ResultSheet_ToSubject" FromRole="Subject" ToRole="ResultSheet" />
+          <NavigationProperty Name="Class" Relationship="SESModel.FK_Subjects_ToClass" FromRole="Subject" ToRole="Class" />
+        </EntityType>
+        <EntityType Name="ResultSheet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RollNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="Int32" Nullable="false" />
+          <Property Name="MarksObtained" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="SESModel.FK_ResultSheet_ToStudent" FromRole="ResultSheet" ToRole="Student" />
+          <NavigationProperty Name="Subject1" Relationship="SESModel.FK_ResultSheet_ToSubject" FromRole="ResultSheet" ToRole="Subject" />
+          <NavigationProperty Name="Results" Relationship="SESModel.ResultBridge" FromRole="ResultSheet" ToRole="Result" />
+        </EntityType>
+        <Association Name="FK_ResultSheet_ToStudent">
+          <End Type="SESModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="SESModel.ResultSheet" Role="ResultSheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="RollNumber" />
+            </Principal>
+            <Dependent Role="ResultSheet">
+              <PropertyRef Name="RollNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResultSheet_ToSubject">
+          <End Type="SESModel.Subject" Role="Subject" Multiplicity="1" />
+          <End Type="SESModel.ResultSheet" Role="ResultSheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResultSheet">
+              <PropertyRef Name="Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ResultBridge">
+          <End Type="SESModel.Result" Role="Result" Multiplicity="*" />
+          <End Type="SESModel.ResultSheet" Role="ResultSheet" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Subjects_ToClass">
+          <End Type="SESModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="SESModel.Subject" Role="Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="ClassID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -813,6 +1121,61 @@ warning 6002: The table/view 'SES.dbo.TeacherClass' does not have a primary key 
             </EndProperty>
             <EndProperty Name="Class">
               <ScalarProperty Name="ClassID" ColumnName="Classid" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Fees">
+            <EntityTypeMapping TypeName="SESModel.Fee">
+              <MappingFragment StoreEntitySet="Fees">
+                <ScalarProperty Name="StartingDate" ColumnName="StartingDate" />
+                <ScalarProperty Name="MonthlyFeeID" ColumnName="MonthlyFeeID" />
+                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exams">
+            <EntityTypeMapping TypeName="SESModel.Exam">
+              <MappingFragment StoreEntitySet="Exam">
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Results">
+            <EntityTypeMapping TypeName="SESModel.Result">
+              <MappingFragment StoreEntitySet="Results">
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SESModel.Subject">
+              <MappingFragment StoreEntitySet="Subjects">
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResultSheets">
+            <EntityTypeMapping TypeName="SESModel.ResultSheet">
+              <MappingFragment StoreEntitySet="ResultSheet">
+                <ScalarProperty Name="MarksObtained" ColumnName="MarksObtained" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="RollNumber" ColumnName="RollNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ResultBridge" TypeName="SESModel.ResultBridge" StoreEntitySet="ResultBridge">
+            <EndProperty Name="ResultSheet">
+              <ScalarProperty Name="Id" ColumnName="SheetID" />
+            </EndProperty>
+            <EndProperty Name="Result">
+              <ScalarProperty Name="Id" ColumnName="ResultID" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>

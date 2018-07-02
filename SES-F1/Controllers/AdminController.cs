@@ -102,6 +102,13 @@ namespace SES_F1.Controllers
             return View(students);
         }
 
+        public ActionResult ViewStudentsbyClass(int classID)
+        {
+            IEnumerable<Student> stdList = db.Students.Where(m => m.ClassID == classID);
+            return PartialView(stdList);
+        }
+
+
         public ActionResult ViewTeachers()
         {
             IEnumerable<Teacher> tList = db.Teachers.AsEnumerable();
@@ -353,6 +360,83 @@ namespace SES_F1.Controllers
             return View();
         }
 
+        //fees
+        public ActionResult Fees()
+        {
+            return View();
+        }
+        public ActionResult PrintFeeChallan()
+        {
+            return View();
+        }
+        
+        public ActionResult getStudentByClassJson(int classID)
+        {
+            List<Student> stdlist = db.Students.Where(m => m.ClassID == classID).ToList();
+            Object[] ob = new Object[stdlist.Count];
+            for (int i = 0; i < ob.Count(); i++)
+            {
+                ob[i] = new
+                {
+                    rollNumber = stdlist[1].RollNumber,
+                    name = stdlist[i].FirstName + " " + stdlist[i].LastName
+                };
+            }
+            return PartialView(stdlist);
+        }
+
+        public ActionResult getChallanOneStudent(string rollnumber, int? month , bool Annual, bool Admissionfee)
+        {
+            int mon;
+            Student s = db.Students.Find(rollnumber);
+            int monthlyfee = s.Class.MonthlyFee;
+            int ACharges = s.Class.AnnualCharges;
+            //bool annualCharges = false;
+            if(month==null)
+            {
+                mon = DateTime.Now.Month;
+            }
+            else
+            {
+                mon = month.Value;
+            }
+            //if (mon == 4)
+            //{
+            //    annualCharges = true;
+            //}
+            ChallanModel chm = new ChallanModel(rollnumber, Admissionfee, Annual);
+            return PartialView(chm);
+        }
+
+        public ActionResult getChallanClass(int classID, int? month)
+        {
+            return View();
+        }
+
+        //EXAMS & RESULTS
+        public ActionResult Exams()
+        {
+            return View();
+        }
+        public ActionResult AddExam()
+        {
+            return View();
+        }
+        [HttpPost]
+        public string AddExam(int classID,string examName,DateTime date)
+        {
+            try {
+                Exam e = new Exam { ClassID = classID, Name = examName, Date = date };
+                db.Exams.Add(e);
+                db.Results.Add(new Result { ExamID = e.Id });
+                db.SaveChanges();
+                return "Exam Added";
+            }
+            catch (Exception e) {
+                return e.Data.ToString();
+            }
+        }
+
 
 
         //ASSIGN TEACHER A CLASS
@@ -390,9 +474,53 @@ namespace SES_F1.Controllers
             return View(teachers);
         }
 
-        [HttpGet]
-        public ActionResult ViewClass(int classID)
+        public ActionResult EditSubjects(int classID)
         {
+            List<Subject> subList = db.Subjects.Where(item => item.ClassID == classID).ToList();
+            ViewBag.Class = classID;
+            return View(subList);
+        }
+        public bool AddSubject(string subName, int classID)
+        {
+            Subject s = new Subject
+            {
+                Name = subName,
+                ClassID = classID
+            };
+            try
+            {
+                db.Subjects.Add(s);
+                db.SaveChanges();
+
+                return true;
+            }catch(Exception e)
+            {
+                return false;
+            }
+        }
+        public bool DeleteSubject(int subID)
+        {
+            try
+            {
+                Subject s = db.Subjects.Find(subID);
+                db.Subjects.Remove(s);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult ViewClass(int? classID)
+        {
+            if (classID == null)
+            {
+                return RedirectToAction("Classes");
+            }
             Class c = db.Classes.Where(item => item.ClassID == classID).First();
             if (c == null)
             {
@@ -401,5 +529,11 @@ namespace SES_F1.Controllers
             }
             return View(c);
         }
+        
+        public ActionResult Admissions()
+        {
+            return View();
+        }
+
     }
 }

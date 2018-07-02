@@ -1,0 +1,17 @@
+﻿@model IEnumerable<SES_F1.Student>
+
+<label>Students: </label>
+<select name="stdSelector" id="stdSelector" class="form-control">
+    @{ foreach (var item in Model)
+        {
+            <option id="@item.RollNumber" value="@item.RollNumber">
+                @item.RollNumber  @item.FirstName  @item.LastName
+            </option>
+        }
+    }
+</select>
+<input type="button" id="getChallan" value="Get Challan" />
+
+
+
+<script src="~/Scripts/fees.js"></script>

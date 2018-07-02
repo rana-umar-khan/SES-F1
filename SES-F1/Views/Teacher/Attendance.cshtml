@@ -7,12 +7,71 @@
 
 }
 
-@using (Html.BeginForm("MarkAttendance", "Teacher", new { classID = ViewBag.ClassID } ,FormMethod.Post,
-                       new { enctype = "multipart/form-data" }))
+@*@using (Ajax.BeginForm("getAttendanceSheet", "Teacher", new AjaxOptions
 {
-    <label>Pick Date: </label>
+    UpdateTargetId = "sheetframe",
+    InsertionMode = InsertionMode.InsertAfter,
+    HttpMethod = "POST"
+}))*@
+    <label> Pick Date: </label>
     <br />
-    <input name="date" type="date" id="date" />
-    <br /><br />
-    <input type="submit" class="btn btn-primary" value="Submit" />
-}
+    <input id="classID" name="classID" hidden="hidden" value="1" />
+    <input name="AttendanceDate" type="date" id="AttendanceDate" />
+    
+    <input type="submit" id="dateSelect" class="btn btn-primary" value="Submit">
+
+
+<div id="data"></div>
+
+<script>
+    
+
+    $(document).ready(function () {
+        $("#dateSelect").on('click', function () {
+            var setting = ({
+                url: "/Teacher/checkDate",
+                type: "get",
+                datatype: 'json',
+                data: {
+                    date: document.getElementById("AttendanceDate").value
+                },
+                success: function (rData, status) {
+                    if (rData.valid == true)
+                        getAttendance();
+                    else
+                        alert("Invalid Date");
+                },
+                error: function (e) {
+                    alert("function error");
+                }
+            });
+            $.ajax(setting);
+        });
+        function getAttendance() {
+            var request = {
+                "classID": document.getElementById("classID").value,
+                "AttendanceDate": document.getElementById("AttendanceDate").value
+            };
+            var setting = ({
+                url: "/Teacher/getAttendanceSheet",
+                type: "get",
+                datatype: 'html',
+                data: request,
+                success: function (rData, status) {
+
+                    $("#data").html(rData);
+                    alert("loaded");
+                },
+                error: function (e) {
+                    alert("Login error");
+                }
+            });
+            $.ajax(setting);
+        }
+    });
+       
+    $(document).ready(function () {
+       
+    });
+
+</script>

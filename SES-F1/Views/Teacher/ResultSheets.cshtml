@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SES_F1.Result>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exam.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exam.Name)
+        </td>
+        <td>
+            @Html.ActionLink("ADD","AddResult","Teacher", routeValues: new { ResultId = item.Id }, htmlAttributes: new { @class = "loginLink" })
+        </td>
+    </tr>
+}
+
+</table>

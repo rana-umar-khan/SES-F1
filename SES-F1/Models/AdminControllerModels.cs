@@ -48,4 +48,27 @@ namespace SES_F1.Models
         [Required]
         public HttpPostedFileBase photo;
     }
+
+    public class ChallanModel
+    {
+        public Student s;
+        public int monthlyFee;
+        public int Arears;
+        public int admissionFee;
+        public int AnnualCharges;
+        public ChallanModel(string rollNumber, bool adm, bool annual)
+        {
+            s = new SESEntities().Students.Find(rollNumber);
+            monthlyFee = s.Class.MonthlyFee;
+            if (adm && annual)
+            {
+                admissionFee = s.Class.AdmissionFee;
+                AnnualCharges = s.Class.AnnualCharges;
+            }
+            else if(annual)
+            {
+                AnnualCharges = s.Class.AnnualCharges;
+            }
+        }
+    }
 }

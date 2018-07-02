@@ -1,19 +1,19 @@
 ﻿@model SES_F1.Class
 
 @{
-    ViewBag.Title = "ViewClass";
+    ViewBag.Title = "View Class";
 }
 
 
 
-<h2>ViewClass</h2>
+<h2>View Class</h2>
 
 <div>
-    <h4>Class</h4>
+    <h4>Class @Model.ClassName</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ClassName)
+            Class Teacher
         </dt>
 
         <dd>
@@ -28,14 +28,11 @@
             }
         </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassName)
-        </dd>
 
         <dt id="swe">
            <button id="btn1" class="btn">View Students</button>
         </dt>
-        <div id="test"></div>
+        <dd id="test"></dd>
         
 
         <dt>
@@ -61,21 +58,36 @@
         <dd>
             @Html.DisplayFor(model => model.AdmissionFee)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(Model=>Model.Subjects)
+        </dt>
+        <dd>
+            @foreach (var item in Model.Subjects)
+            {
+                <p>@item.Name</p>
+            }
+            
+        </dd>
+        <dd>
+            <button id="editSubjects" onclick="document.location.href='http://localhost:54195/Admin/EditSubjects?classID=@Model.ClassID'" class="btn btn-primary">Edit Subjects</button>
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassID })
+    @Html.ActionLink("Back to List", "Classes")
 </p>
 
 
-
+@* following script is only for practice *@
 <script>
         $(document).ready(function () {
             $('#btn1').on('click', function () {
                 var stds = $('<p>Showing Students</p>');
-                $.get("http://localhost:54195/Admin/index", function (data, status) {
+                var req = {
+                    "classID": @Model.ClassID
+                };
+                $.get("http://localhost:54195/Admin/ViewStudentsbyClass",req, function (data, status) {
                     $("#test").html(data);
                     alert(status);
                 });
@@ -85,7 +97,9 @@
     });
 
     $(document).ready(function () {
-        
+        var a = 56;
+        var b = "umar";
+        $('#test').html = a + b;
     });
     
 </script>

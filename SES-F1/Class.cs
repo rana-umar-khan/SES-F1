@@ -19,6 +19,8 @@ namespace SES_F1
         {
             this.Students = new HashSet<Student>();
             this.Teachers = new HashSet<Teacher>();
+            this.Exams = new HashSet<Exam>();
+            this.Subjects = new HashSet<Subject>();
         }
     
         public int ClassID { get; set; }
@@ -31,5 +33,9 @@ namespace SES_F1
         public virtual ICollection<Student> Students { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teacher> Teachers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Exam> Exams { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Subject> Subjects { get; set; }
     }
 }

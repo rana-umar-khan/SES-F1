@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "PrintFeeChallan";
+}
+
+
+<h2>Print Fee Challan</h2>
+
+<div class="row">
+    <div class="col-4">
+
+        @{
+            SESEntities db = new SESEntities();
+            List<Class> classes = db.Classes.ToList();
+
+            <label>Class: </label>
+            <select name="ClassSelector" id="ClassSelector" class="form-control">
+                @foreach (Class item in classes)
+                {
+                    <option value="@item.ClassID">
+                        @item.ClassName
+                    </option>
+                }
+            </select>
+            <br />
+            <input class="btn" id="stdbtn" type="submit" value="Show Students" />
+        }
+        <br />
+        <br />
+        <br />
+        <div id="stdlist">
+
+        </div>
+
+    </div>
+    <div class="col-8">
+        <div id="challan">
+
+        </div>
+        @*<input type="button" value="Print" onclick="document.getElementById('challan').focus();
+            document.getElementById('challan').contentWindow.print();" />*@
+    </div>
+    <button id="print" onclick="printContent('challan');">Print</button>
+
+</div>
+
+<script src="~/Scripts/fees.js"></script>

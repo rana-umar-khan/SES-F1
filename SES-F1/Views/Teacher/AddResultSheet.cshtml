@@ -1,0 +1,82 @@
+﻿@model SES_F1.Models.ResultSheetModel
+
+@{
+    SESEntities se = new SESEntities();
+}
+
+<br />
+<h2>Add Result Sheet</h2>
+
+<h3>Exam: @se.Exams.Find(Model.examID).Name</h3>
+<h3>Class: @se.Classes.Find(Model.classID).ClassName</h3>
+<h5>Subject: @se.Subjects.Find(Model.subjectID).Name</h5>
+
+<table class="table table-bordered table-active">
+    <tr>
+        <th>RollNumber</th>
+        <th>Student Name</th>
+        <th>Marks Obtained</th>
+    </tr>
+   
+     @for (int i=0;i<Model.students.Count;i++)
+     {
+        <tr>
+            <td id="rollnum @i">
+                @Model.students[i]
+            </td>
+            <td>
+                @Model.studentsName[i]
+            </td>
+            <td>
+                <input id="marks @i" name="marks @i" value="@Model.markslist[i]" type="number" max="100" min="0" />
+            </td>
+        </tr>
+     }
+</table>
+<input type="submit" id="submitSheet" name="submitSheet" value="Save Result Sheet" />
+
+<script>
+    $(document).ready(function () {
+         $("#submitSheet").on('click', function () {
+
+            var markslist = Array(@Model.students.Count);
+            var rollnumbers = Array(@Model.students.Count);
+            @{int j = 0; }
+
+            for (var i = 0; i <@Model.students.Count; i++) {
+                rollnumbers[i] = (document.getElementById("rollnum " + i)).innerText;
+            }
+            
+            
+            @for (int i = 0; i <Model.students.Count; i++) {
+
+               <Text> markslist[@i] = document.getElementById("marks @i").value; </Text>
+            }
+            var resultsheet = {
+                "classID": @Model.classID,
+                "subID": @Model.subjectID,
+                "examID":@Model.examID,
+                "markslist": markslist,
+                "RollNumbers": rollnumbers
+            };
+
+            //Ajax
+            var setting = ({
+                url: "/Teacher/SaveResultSheet",
+                type: "Post",
+                datatype: 'html',
+                traditional: 'yes',
+                data: resultsheet,
+                success: function (rData) {
+                    $('#body').html(rData);
+                    alert(rData);
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+            $.ajax(setting);
+    });
+
+    });
+</script>

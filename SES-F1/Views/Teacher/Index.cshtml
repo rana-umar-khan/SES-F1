@@ -8,9 +8,6 @@
 
 @ViewBag.Message
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -39,10 +36,11 @@
             @Html.DisplayFor(modelItem => item.ClassName)
         </td>
         <td>
-            @Html.ActionLink("Mark Attendance", "Attendance","Teacher", new { ClassID = item.ClassID },new { @class= "btn" } );
-</td>
+            @Html.ActionLink("View Students", "StudentsByClass", "Teacher", new { ClassID = item.ClassID }, new { @class = "btn btn-primary" })
 
-
+            @Html.ActionLink("Mark Attendance", "Attendance", "Teacher", new { ClassID = item.ClassID }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Results", "Results", "Teacher", new { ClassID = item.ClassID }, new { @class = "btn btn-primary" })
+        </td>
 </tr>
 }
 
